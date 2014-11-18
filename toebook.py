@@ -38,4 +38,14 @@ if __name__ == '__main__':
         args.input = mdpath
 
     cmd = 'pandoc {} -o {}'.format(args.input, args.output)
+
+    dstext = os.path.splitext(args.output)[1].lower()
+    if dstext == '.epub':
+        imgs = map(lambda x: name + x, ['.jpg', '.png'])
+        imgs = filter(os.path.isfile, imgs)
+        if imgs:
+            cmd += ' --epub-cover-image="{}"'.format(imgs[0])
+
+    print cmd
     subprocess.check_call(cmd)
+    print 'Done!'
