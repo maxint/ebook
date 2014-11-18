@@ -13,7 +13,7 @@ import codecs
 
 def main(src, dst):
     book = json.load(open(src, 'rt'))
-    with codecs.open(dst, 'wt', encoding='utf-8') as fp:
+    with codecs.open(dst, 'w', encoding='utf-8') as fp:
         def write(s):
             fp.write(s)
 
@@ -26,6 +26,7 @@ def main(src, dst):
         end_idx = 0
         sections = book['sections']
         for majors in book['major_sections']:
+            write(u'\n\n')
             write(u'# {}'.format(majors['name']))
             end_idx += majors['num']
             for i in range(start_idx, end_idx):
@@ -34,6 +35,7 @@ def main(src, dst):
                 write(u'## {}'.format(section['subtitle']))
                 write(u'\n\n')
                 write(section['content'].replace('\r\n', '\n'))
+            start_idx = end_idx
 
 if __name__ == '__main__':
     import os.path
@@ -51,4 +53,3 @@ if __name__ == '__main__':
         args.output = os.path.splitext(args.input)[0] + '.md'
 
     main(args.input, args.output)
-    # main('santi/三体.json', 'test.md')
